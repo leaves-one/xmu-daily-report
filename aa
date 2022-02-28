@@ -7,13 +7,11 @@ from typing import List
 
 import random
 import calendar
-import yagmail
 
 import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
-
 
 debug = os.getenv("ENV") == "debug"
 
@@ -32,13 +30,11 @@ logger = logging.getLogger(__name__)
 
 vpn_login_url = 'http://webvpn.xmu.edu.cn/https/77726476706e69737468656265737421e8fa5484207e705d6b468ca88d1b203b/login'
 vpn_checkin_url = 'http://webvpn.xmu.edu.cn/https/77726476706e69737468656265737421e8fa5484207e705d6b468ca88d1b203b/app/214'
+vpn_days_url = 'http://webvpn.xmu.edu.cn/https/77726476706e69737468656265737421e8fa5484207e705d6b468ca88d1b203b/schoolcustom/demo'
 direct_login_url = 'http://xmuxg.xmu.edu.cn/login'
 direct_checkin_url = 'http://xmuxg.xmu.edu.cn/app/214'
 mail_server_url = 'http://120.77.39.85:8080/mail/daily_report'
 
-user_email='2576002875@qq.com'#(可选)发送的邮件方 我这里用的一个小号
-password_email='ozsydzmhxuzddjhf'#（可选）邮件密码不是qq密码 而是需要到自己的邮箱设置的密码 具体可以百度怎么自动发送邮件
-email_reciver=config["email"]
 
 def random_second() -> int:
     return random.randrange(start=0, stop=3600, step=1)
@@ -184,22 +180,23 @@ def checkin(username, passwd, passwd_vpn, use_vpn=True):
             output = '打卡失败'
     else:
         output = '今日已打卡'
+    
+    driver.get(vpn_days_url)
+    xpath_allday = '/html/body/div[2]/div/span[3]'
+    day = driver.find_element_by_xpath(xpath_allday).text
+    output = output + '，' + day
+    
+    
+    
     driver.close()
     return output
 
 
 def send_mail(msg: str, title: str, to: str):
     if not debug:
-        server = yagmail.SMTP(user_email, password_email, host='smtp.qq.com')#, port=25, smtp_starttls=True, smtp_ssl=False
-        emailtext = content
-        #server.send(email_reciver, 'IMPORTANT', emailtext)
-        server.send(to, 'IMPORTANT', msg)
-        print("发送成功")
-        
-        
-        #post = requests.post(mail_server_url, data=json.dumps(
-         #   {"title": title, "body": msg, "dest": to}))
-        #return post
+        post = requests.post(mail_server_url, data=json.dumps(
+            {"title": title, "body": msg, "dest": to}))
+        return post
 
 
 CONFIG_KEYS = ["username", "password", "password_vpn", "email"]
