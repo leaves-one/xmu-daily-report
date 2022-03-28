@@ -41,6 +41,7 @@ VPN_CHECKIN_URL = 'http://webvpn.xmu.edu.cn/https/77726476706e697374686562657374
 DIRECT_LOGIN_URL = 'http://xmuxg.xmu.edu.cn/login'
 DIRECT_CHECKIN_URL = 'http://xmuxg.xmu.edu.cn/app/214'
 MAIL_SERVER_URL = 'http://120.77.39.85:8080/mail/daily_report'
+health_day_url='https://xmuxg.xmu.edu.cn/schoolcustom/demo'
 
 NULL = '请选择'
 
@@ -144,8 +145,8 @@ def checkin(username, passwd, passwd_vpn, email, use_vpn=True) -> None:
     """
     dropdowns = [
         ['//*[@id="address_1582538163410"]/div/div[1]/div/div', '//label[@title="福建省"][1]', '省'],
-        ['//*[@id="address_1582538163410"]/div/div[2]/div/div', '//label[@title="厦门市"][1]', '市'],
-        ['//*[@id="address_1582538163410"]/div/div[3]/div/div', '//label[@title="翔安区"][1]', '区'],
+        ['//*[@id="address_1582538163410"]/div/div[2]/div/div', '//label[@title="漳州市"][1]', '市'],
+        ['//*[@id="address_1582538163410"]/div/div[3]/div/div', '//label[@title="龙海市"][1]', '区'],
         ["//*[@id='select_1582538939790']/div/div/span[1]", "/html/body/div[8]/ul/div/div[3]/li/label", '本人承诺']
     ]
     for dropdown in dropdowns:
@@ -165,9 +166,17 @@ def checkin(username, passwd, passwd_vpn, email, use_vpn=True) -> None:
     else:
         driver.switch_to.alert.dismiss()
     time.sleep(1)
+    
+    
+    drive.get(health_day_url)
+    time.sleep(1)
+    xpath_allday='/html/body/div[2]/div/span[3]' 
+    day=driver.find_element_by_xpath(xpath_allday).text
+    time.sleep(1)
+    
     driver.close()
     logger.info("打卡成功")
-    send_mail(f"账号【{username}】打卡成功", "打卡成功", email)
+    send_mail(f"账号【{username}】打卡成功,{day}", "打卡成功", email)
 
 
 def send_mail(msg: str, title: str, to: str):
