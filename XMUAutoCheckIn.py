@@ -172,11 +172,12 @@ def checkin(username, passwd, passwd_vpn, email, use_vpn=True) -> None:
     time.sleep(1)
     xpath_allday='/html/body/div[2]/div/span[3]' 
     day=driver.find_element_by_xpath(xpath_allday).text
+    aaday=day[-4:]
     time.sleep(1)
     
     driver.close()
     logger.info("打卡成功")
-    send_mail(f"账号【{username}】打卡成功,{day}", "打卡成功", email)
+    send_mail(f"账号【{username}】打卡成功,{day}", f"打卡成功,{aaday}", email)
 
 
 def send_mail(msg: str, title: str, to: str):
