@@ -168,7 +168,7 @@ def checkin(username, passwd, passwd_vpn, email, use_vpn=True) -> None:
     time.sleep(1)
     
     
-    drive.get(health_day_url)
+    driver.get(health_day_url)
     time.sleep(1)
     xpath_allday='/html/body/div[2]/div/span[3]' 
     day=driver.find_element_by_xpath(xpath_allday).text
