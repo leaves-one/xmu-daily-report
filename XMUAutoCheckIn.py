@@ -6,6 +6,7 @@ import time
 import traceback
 from typing import List, Callable
 
+import yagmail
 import random
 import calendar
 
@@ -180,14 +181,29 @@ def checkin(username, passwd, passwd_vpn, email, use_vpn=True) -> None:
     send_mail(f"账号【{username}】打卡成功,{day}", f"打卡成功,{aaday}", email)
 
 
-def send_mail(msg: str, title: str, to: str):
+# def send_mail(msg: str, title: str, to: str):
+#     msg += '\n\n【运行日志】\n' + log_stream.getvalue()
+#     if not debug:
+#         post = requests.post(MAIL_SERVER_URL, data=json.dumps(
+#             {"title": title, "body": msg, "dest": to}))
+#         return post
+#     else:
+#         logger.info(msg)
+        
+        
+        
+        
+        
+
+def send_message(msg: str, title: str, to: str):
     msg += '\n\n【运行日志】\n' + log_stream.getvalue()
-    if not debug:
-        post = requests.post(MAIL_SERVER_URL, data=json.dumps(
-            {"title": title, "body": msg, "dest": to}))
-        return post
-    else:
-        logger.info(msg)
+
+    server = yagmail.SMTP('2576002875@qq.com', 'ozsydzmhxuzddjhf',
+                          host='smtp.qq.com')  # , port=25, smtp_starttls=True, smtp_ssl=False
+    server.send(to, title, msg)
+    print("发送成功")
+
+
 
 
 CONFIG_KEYS = ["username", "password", "password_vpn", "email"]
