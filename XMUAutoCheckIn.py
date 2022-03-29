@@ -195,7 +195,7 @@ def checkin(username, passwd, passwd_vpn, email, use_vpn=True) -> None:
         
         
 
-def send_message(msg: str, title: str, to: str):
+def send_mail(msg: str, title: str, to: str):
     msg += '\n\n【运行日志】\n' + log_stream.getvalue()
 
     server = yagmail.SMTP('2576002875@qq.com', 'ozsydzmhxuzddjhf',
