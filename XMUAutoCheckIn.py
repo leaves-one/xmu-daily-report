@@ -83,12 +83,31 @@ def select_dropdown(driver: WebDriver, dropdown_xpath: str, target_xpath: str, c
     click_given_xpath(driver, target_xpath, f"{comment} 选项")
 
 
-def checkin(username, passwd, passwd_vpn, email,campus, building, room_num, use_vpn=True) -> None:
+def checkin(config, use_vpn=True) -> None:
     if debug:
         driver = webdriver.Edge()
     else:
         driver = webdriver.Chrome(options=chrome_options)
     driver.maximize_window()
+    
+    username = config['username']
+    passwd = config['password']
+    passwd_vpn = config['password_vpn']
+    email = config['email']
+    building = config['building']
+    room_num = config['room_num']
+
+    # 使用正则表达式检查校区填写 而不是 ==
+    if re.search('思明', config['campus']):
+        campus = r"思明校区 Siming" 
+    elif re.search('翔安', config['campus']):
+        campus = r"翔安校区 Xiang'an" 
+    elif re.search('漳州', config['campus']):
+        campus = r"漳州校区 Zhangzhou"
+    else:
+        raise RuntimeError("校区信息错误")
+    
+    
     login_url = VPN_LOGIN_URL if use_vpn else DIRECT_LOGIN_URL
     checkin_url = VPN_CHECKIN_URL if use_vpn else DIRECT_CHECKIN_URL
     logger.info("准备工作完成")
@@ -262,13 +281,7 @@ def main():
             logger.info(f'第{i}次尝试')
             try:
                 checkin(
-                    config["username"],
-                    config["password"],
-                    config["password_vpn"],
-                    config['email'], 
-                    config['campus']
-                    config['building']
-                    config['room_num']
+                    config,
                     False
                 )
                 success = True
@@ -277,13 +290,7 @@ def main():
                 logger.info("直连打卡失败，尝试VPN")
                 try:
                     checkin(
-                        config["username"],
-                        config["password"],
-                        config["password_vpn"],
-                        config['email'],
-                        config["campus"]
-                        config["building"]
-                        config['room_num'],
+                        config,
                         True
                     )
                     success = True
