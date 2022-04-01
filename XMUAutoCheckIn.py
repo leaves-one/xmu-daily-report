@@ -253,6 +253,7 @@ def get_configs() -> List[dict]:
 
 def main():
     configs = get_configs()
+    print(configs)
     logger.info(f"已配置 {len(configs)} 个账号")
     for config in configs:
         logger.info(f"账号【{config['username']}】正在运行")
