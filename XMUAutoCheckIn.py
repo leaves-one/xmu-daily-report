@@ -83,7 +83,7 @@ def select_dropdown(driver: WebDriver, dropdown_xpath: str, target_xpath: str, c
     click_given_xpath(driver, target_xpath, f"{comment} 选项")
 
 
-def checkin(username, passwd, passwd_vpn, email, use_vpn=True) -> None:
+def checkin(username, passwd, passwd_vpn, email,campus, building, room_num, use_vpn=True) -> None:
     if debug:
         driver = webdriver.Edge()
     else:
@@ -264,7 +264,11 @@ def main():
                     config["username"],
                     config["password"],
                     config["password_vpn"],
-                    config['email'], False
+                    config['email'], 
+                    config['campus']
+                    config['building']
+                    config['room_num']
+                    False
                 )
                 success = True
                 break
@@ -275,6 +279,9 @@ def main():
                         config["username"],
                         config["password"],
                         config["password_vpn"],
+                        config['campus']
+                        config['building']
+                        config['room_num']
                         config['email'], True
                     )
                     success = True
