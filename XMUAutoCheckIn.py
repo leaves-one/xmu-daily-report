@@ -148,8 +148,19 @@ def checkin(username, passwd, passwd_vpn, email, use_vpn=True) -> None:
         ['//*[@id="address_1582538163410"]/div/div[1]/div/div', '//label[@title="福建省"][1]', '省'],
         ['//*[@id="address_1582538163410"]/div/div[2]/div/div', '//label[@title="漳州市"][1]', '市'],
         ['//*[@id="address_1582538163410"]/div/div[3]/div/div', '//label[@title="龙海市"][1]', '区'],
+        ['//*[@id="select_1611108284522"]/div/div/span[1]', '//label[@title="在校"][1]', '是否在校'],
+        ['//*[@id="select_1582538643070"]/div/div/span[1]', '//label[@title="%s"][1]' % campus, '校区'],
+        ['//*[@id="select_1611110401193"]/div/div/span[1]', '//label[@title="住校内  Yes，on campus"][1]', '住校内'],
+        ['//*[@id="select_1611108377024"]/div/div/span[1]', '//label[@title="住校内学生宿舍"][1]', '住校内学生宿舍'],
+        ['//*[@id="select_1611108445364"]/div/div/span[1]', '//label[@title="%s"][1]' % building, '宿舍楼号'],  
         ["//*[@id='select_1582538939790']/div/div/span[1]", "/html/body/div[8]/ul/div/div[3]/li/label", '本人承诺']
     ]
+    
+    input_infos = [
+        ['//*[@id="input_1611108449736"]/input', room_num, '房间号'],
+    ]    
+    
+    
     for dropdown in dropdowns:
         if NULL in get_text(driver, dropdown[0], dropdown[2]):
             select_dropdown(driver, *dropdown)
@@ -206,7 +217,7 @@ def send_mail(msg: str, title: str, to: str):
 
 
 
-CONFIG_KEYS = ["username", "password", "password_vpn", "email"]
+CONFIG_KEYS = ["username", "password", "password_vpn", "email", 'campus', 'building', 'room_num']
 
 
 def fail(msg: str, title: str, email: str = "", e: Exception = None, shutdown=True, run_fail=False):
