@@ -281,7 +281,7 @@ def main():
                         config["password_vpn"],
                         config['email'],
                         config["campus"]
-                        config["building']
+                        config["building"]
                         config['room_num'],
                         True
                     )
