@@ -279,10 +279,11 @@ def main():
                         config["username"],
                         config["password"],
                         config["password_vpn"],
-                        config['campus']
-                        config['building']
-                        config['room_num']
-                        config['email'], True
+                        config['email'],
+                        config["campus"]
+                        config["building']
+                        config['room_num'],
+                        True
                     )
                     success = True
                     break
