@@ -59,8 +59,7 @@ def unix_timestamp() -> int:
 
 def must_operate_element_by_xpath(driver: WebDriver, xpath: str, do: Callable, comment: str):
     try:
-        target = WebDriverWait(driver, 10).until(
-            lambda x: x.find_element(By.XPATH, xpath))
+        target = WebDriverWait(driver, 10).until(lambda x: x.find_element(By.XPATH, xpath))
         result = do(target)
         logger.info(f"{comment} 成功")
         return result
