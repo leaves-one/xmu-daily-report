@@ -202,7 +202,8 @@ def checkin(config, use_vpn=True) -> None:
     driver.get(health_day_url)
     time.sleep(1)
     xpath_allday='/html/body/div[2]/div/span[3]' 
-    day=driver.find_element_by_xpath(xpath_allday).text
+    day=drive.find_element(By.XPATH, xpath_allday).text
+#     day=driver.find_element_by_xpath(xpath_allday).text
     aaday=day[-4:]
     time.sleep(1)
     
